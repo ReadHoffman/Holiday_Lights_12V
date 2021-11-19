@@ -13,11 +13,11 @@ ORDER = neopixel.GRB
 pixel_pin = board.D18
 
 pixels = neopixel.NeoPixel(
-    pixel_pin, num_pixels, brightness=1, auto_write=False, pixel_order=ORDER
+    pixel_pin, num_pixels, brightness=.5, auto_write=False, pixel_order=ORDER
 )
 
-RED = (255,0,0)
-GREEN = (0,255,0)
+GREEN = (255,0,0)
+RED = (0,255,0)
 BLUE = (0,0,255)
 WHITE = (255,255,255)
 BLACK = (0,0,0)
