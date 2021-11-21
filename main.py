@@ -14,17 +14,19 @@ import time
 if __name__ == '__main__':
     try:
         while True:
-            hour = time.localtime().tm_hour
-            if  (hour>=11 and hour <22) or (hour>5 and hour <8):
-                pass
-            else:
-                time.sleep(60)
-                continue
+#             hour = time.localtime().tm_hour
+#             if  (hour>=11 and hour <22) or (hour>5 and hour <8):
+#                 pass
+#             else:
+#                 time.sleep(60)
+#                 continue
+            plinko_color(1,[WHITE,BLUE],1,.02,5,BLACK)
+            reset(1)
+            plinko_color(1,[RED,GREEN],1,.02,5,WHITE)
+            reset(1)
             random_points(.1,[WHITE],1)
             reset(1)
             random_points(.1,[RED,GREEN],1)
-            reset(1)
-            plinko_color(1,[RED,GREEN],.5,.02,5)
             reset(1)
             slide_and_stop(1,[WHITE,GREEN],1,.02)
             reset(1)

@@ -66,27 +66,33 @@ def slide_and_stop(wait,colors_list,cycle_limit,speed):
                 time.sleep(speed)
         cycle += 1
 
-def plinko_color(wait,colors_list,cycle_limit,speed,plinko_size):
-    pixels.fill(BLACK)
+def plinko_color(wait,colors_list,cycle_limit,speed,plinko_size,background_color):
+    pixels.fill(background_color)
     pixels.show()
     color_ct = len(colors_list)
     cycle = 0
     while cycle < cycle_limit:
-        j = 0
-        while j < num_pixels:
-            plinko_length = plinko_size*j
-            color = colors_list[j % color_ct]
-            i=0
-            while i < num_pixels-plinko_length:
-                for k in range(i):
-                    pixels[k] = BLACK
-                for m in range(i-plinko_size,i):
-                    if m < 0: continue
-                    pixels[m] = color
-                pixels.show()
+        plinko_chip = 0
+        #iterate thru all pixels
+        plinko_already_stacked = 0
+        while plinko_already_stacked < num_pixels + plinko_size:
+            #toggle through color list
+            color = colors_list[plinko_chip % color_ct]
+            
+            #iterate thru available pixels not already stacked
+            lead_pixel = 0
+            while lead_pixel < num_pixels:
+                if lead_pixel < num_pixels - plinko_already_stacked:
+                    for background_pixel in range(lead_pixel):
+                        pixels[background_pixel] = background_color
+                    for plinko_stack_pixel in range(lead_pixel-plinko_size+1,lead_pixel+1):
+                        if plinko_stack_pixel >= 0 and plinko_stack_pixel < num_pixels: 
+                            pixels[plinko_stack_pixel] = color
+                    pixels.show()
                 time.sleep(speed)
-                i += 1 
-            j += 1
+                lead_pixel += 1
+            plinko_chip += 1
+            plinko_already_stacked = plinko_size*plinko_chip
         cycle += 1
 
 def random_points(wait,colors_list,cycle_limit):
