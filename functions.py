@@ -75,22 +75,28 @@ def plinko_color(wait,colors_list,cycle_limit,speed,plinko_size,background_color
         plinko_chip = 0
         #iterate thru all pixels
         plinko_already_stacked = 0
-        while plinko_already_stacked < num_pixels + plinko_size:
+        zone_max_length = max([ max-min+1 for min,max in ZONES])
+        while plinko_already_stacked < zone_max_length + plinko_size:
             #toggle through color list
             color = colors_list[plinko_chip % color_ct]
-            
+
             #iterate thru available pixels not already stacked
             lead_pixel = 0
-            while lead_pixel < num_pixels:
-                if lead_pixel < num_pixels - plinko_already_stacked:
-                    for background_pixel in range(lead_pixel):
-                        pixels[background_pixel] = background_color
-                    for plinko_stack_pixel in range(lead_pixel-plinko_size+1,lead_pixel+1):
-                        if plinko_stack_pixel >= 0 and plinko_stack_pixel < num_pixels: 
-                            pixels[plinko_stack_pixel] = color
-                    pixels.show()
-                time.sleep(speed)
+            while lead_pixel < zone_max_length:
+                for zone in ZONES:
+                    zone_max_pixel = zone[1]
+                    zone_min_pixel = zone[0]
+                    zone_lead_pixel = lead_pixel + zone_min_pixel
+                    if zone_lead_pixel < zone_max_pixel - plinko_already_stacked:
+                        for background_pixel in range(zone_min_pixel,zone_lead_pixel):
+                            pixels[background_pixel] = background_color
+                        for plinko_stack_pixel in range(zone_lead_pixel-plinko_size+1,zone_lead_pixel+1):
+                            if plinko_stack_pixel >= 0 and plinko_stack_pixel < zone_max_pixel: 
+                                pixels[plinko_stack_pixel] = color
+                        pixels.show()
+                    time.sleep(speed)
                 lead_pixel += 1
+                
             plinko_chip += 1
             plinko_already_stacked = plinko_size*plinko_chip
         cycle += 1
